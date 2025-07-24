@@ -1,1 +1,39 @@
 @import "tailwindcss";
+
+/* Container that masks the overflowing content */
+/* src/components/FeedbackSlider.css */
+
+.feedback-slider-container {
+    overflow: hidden;
+    width: 100%;
+
+  }
+  
+  .feedback-slider-track {
+    display: flex;
+    width: calc(350px * 10); 
+    animation: slide 40s linear infinite;
+  }
+  
+  .feedback-slider-container:hover .feedback-slider-track {
+    animation-play-state: paused;
+  }
+  
+  @keyframes slide {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  
+  /* ✅ The problematic rule is now removed.
+    We define the card's width and spacing here, 
+    but its look and feel (colors, padding) are in the JSX.
+  */
+  .feedback-card {
+    flex-shrink: 0;
+    width: 320px;
+    margin-right: 30px;
+  }
