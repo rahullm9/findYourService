@@ -1,4 +1,5 @@
 // import Logo from '../assets/Logo.png'
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
     return (
@@ -13,10 +14,10 @@ const Navbar = () => {
         <nav className="mt-4 sm:mt-0 flex flex-row justify-center items-center" >
           <ul className="flex space-x-6">
             <li>
-              <a href="#home" className="text-gray-700 hover:text-blue-600 font-semibold text-lg transition duration-200">Home</a>
+              <Link to="/" className="text-gray-700 hover:text-blue-600 font-semibold text-lg transition duration-200">Home</Link>
             </li>
             <li>
-              <a href="#services" className="text-gray-700 hover:text-blue-600 font-semibold text-lg transition duration-200">Services</a>
+              <Link to="services" href="#services" className="text-gray-700 hover:text-blue-600 font-semibold text-lg transition duration-200">Services</Link>
             </li>
             <li>
               <a href="#contact" className="text-gray-700 hover:text-blue-600 font-semibold text-lg transition duration-200">Contact</a>
