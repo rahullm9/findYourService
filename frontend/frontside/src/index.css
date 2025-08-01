@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+
+/* ******************* feedback section ************************************** */
+
 /* Container that masks the overflowing content */
 /* src/components/FeedbackSlider.css */
 
@@ -37,3 +40,14 @@
     width: 320px;
     margin-right: 30px;
   }
+
+/* ********************* Auth Page ************************************************************/
+
+.auth-container{
+  width: 50%;
+  padding: 15px;
+}
+.input-container{
+  width: 100%;
+  padding: 5px;
+}
