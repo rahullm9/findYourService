@@ -1,8 +1,16 @@
-import { Mail, Send, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
-import { useState } from 'react';
+import {
+  Mail,
+  Send,
+  Facebook,
+  Twitter,
+  Instagram,
+  Linkedin,
+} from "lucide-react";
+
+import { useState } from "react";
 
 export default function ContactUs() {
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -10,15 +18,16 @@ export default function ContactUs() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert('Message sent!');
-    setForm({ name: '', email: '', message: '' });
+    alert("Message sent!");
+    setForm({ name: "", email: "", message: "" });
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-100 flex flex-col items-center p-6">
       <h1 className="text-4xl font-bold mb-4 text-center">Contact Us</h1>
       <p className="text-gray-600 mb-8 text-center max-w-md">
-        We'd love to hear from you! Please fill out the form below or connect with us on social media.
+        We'd love to hear from you! Please fill out the form below or connect
+        with us on social media.
       </p>
 
       <form
