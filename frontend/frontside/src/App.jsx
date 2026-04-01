@@ -7,7 +7,7 @@ import Footer from "./components/Home/footer/Footer";
 import AuthPage from "./components/Auth/AuthPage";
 import ContactUs from "./components/contactUs/ContactUs";
 import RegisterWorker from "./components/services/RegisterWorker";
-// import Onboarding from "./components/onBoarding/onBoarding";
+import Dashboard from "./components/Dashboard/Dashboard";
 
 const App = () => {
   return (
@@ -18,6 +18,7 @@ const App = () => {
           <Route exact path="/" element={<Home />} />
           <Route path="/services" element={<UserServices />} />
           <Route path="/signin" element={<AuthPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/contactus" element={<ContactUs />}></Route>
           <Route path="/services/worker" element={<RegisterWorker />}></Route>
           {/* <Route path="/onbording" element={<Onboarding />}></Route> */}

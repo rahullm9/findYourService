@@ -70,7 +70,7 @@ export default function UserServices() {
       </motion.div>
 
       <button className="mt-10 px-6 py-3 text-white bg-indigo-600 hover:bg-indigo-700 rounded-full shadow-lg">
-        <Link to="worker" >Register as Worker</Link>
+        <Link to="/signin" >Login</Link>
       </button>
     </div>
   );
