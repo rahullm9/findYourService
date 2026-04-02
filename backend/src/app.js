@@ -10,7 +10,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // --------------- Routes ---------------
 import authRoutes from "./routes/user.routes.js";
+import postRoutes from "./routes/post.routes.js";
+
 app.use("/api/auth", authRoutes);
+app.use("/api/posts", postRoutes);
 
 // Health check
 app.get("/api/health", (_req, res) => {

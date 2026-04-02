@@ -65,3 +65,66 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// @desc    Get current user profile
+// @route   GET /api/auth/me
+// @access  Private
+export const getMe = async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      skills: user.skills,
+      bio: user.bio,
+      pricing: user.pricing,
+      profilePhoto: user.profilePhoto,
+      location: user.location,
+      availability: user.availability,
+      phoneVerified: user.phoneVerified,
+    });
+  } else {
+    res.status(404).json({ message: "User not found" });
+  }
+};
+
+// @desc    Update user profile
+// @route   PUT /api/auth/profile
+// @access  Private
+export const updateUserProfile = async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
+    user.skills = req.body.skills || user.skills;
+    user.bio = req.body.bio || user.bio;
+    user.pricing = req.body.pricing !== undefined ? req.body.pricing : user.pricing;
+    user.profilePhoto = req.body.profilePhoto || user.profilePhoto;
+    user.location = req.body.location || user.location;
+    user.availability = req.body.availability || user.availability;
+
+    const updatedUser = await user.save();
+
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      skills: updatedUser.skills,
+      bio: updatedUser.bio,
+      pricing: updatedUser.pricing,
+      profilePhoto: updatedUser.profilePhoto,
+      location: updatedUser.location,
+      availability: updatedUser.availability,
+      phoneVerified: updatedUser.phoneVerified,
+      token: generateToken(updatedUser._id),
+    });
+  } else {
+    res.status(404).json({ message: "User not found" });
+  }
+};
