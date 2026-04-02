@@ -22,6 +22,37 @@ const userSchema = new mongoose.Schema(
       minlength: 6,
       select: false,
     },
+    skills: {
+      type: [String],
+      default: [],
+    },
+    bio: {
+      type: String,
+      default: "",
+    },
+    pricing: {
+      type: Number,
+      default: 0,
+    },
+    profilePhoto: {
+      type: String,
+      default: "",
+    },
+    location: {
+      lat: { type: Number },
+      lng: { type: Number },
+      city: { type: String },
+      area: { type: String },
+    },
+    availability: {
+      type: String,
+      enum: ["Full-time", "Part-time", "None"],
+      default: "None",
+    },
+    phoneVerified: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
