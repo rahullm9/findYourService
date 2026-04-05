@@ -20,8 +20,19 @@ const postSchema = new mongoose.Schema(
       required: [true, "Please add a description"],
     },
     location: {
-      type: String,
-      required: [true, "Please add a location"],
+      type: {
+        type: String,
+        enum: ["Point"],
+        default: "Point",
+      },
+      coordinates: {
+        type: [Number], // [lng, lat]
+        required: true,
+      },
+      address: {
+        type: String,
+        required: [true, "Please add a location address"],
+      },
     },
     price: {
       type: Number,
@@ -45,6 +56,9 @@ const postSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// Create geospatial index
+postSchema.index({ "location.coordinates": "2dsphere" });
 
 const Post = mongoose.model("Post", postSchema);
 

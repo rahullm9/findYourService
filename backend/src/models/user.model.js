@@ -53,6 +53,16 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    settings: {
+      privacy: {
+        profilePublic: { type: Boolean, default: true },
+        showEmail: { type: Boolean, default: false }
+      },
+      notifications: {
+        messages: { type: Boolean, default: true },
+        posts: { type: Boolean, default: true }
+      }
+    }
   },
   { timestamps: true }
 );

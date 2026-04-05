@@ -11,9 +11,11 @@ app.use(express.urlencoded({ extended: true }));
 // --------------- Routes ---------------
 import authRoutes from "./routes/user.routes.js";
 import postRoutes from "./routes/post.routes.js";
+import messageRoutes from "./routes/message.routes.js";
 
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
+app.use("/api/messages", messageRoutes);
 
 // Health check
 app.get("/api/health", (_req, res) => {

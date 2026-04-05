@@ -15,6 +15,9 @@ import Sidebar from "./Sidebar";
 import Profile from "./Profile/Profile";
 import CreatePost from "./Post/CreatePost.jsx";
 import MyPosts from "./Post/MyPosts.jsx";
+import Nearby from "./Post/Nearby.jsx";
+import Messages from "./Messages/Messages.jsx";
+import Settings from "./Settings/Settings.jsx";
 
 // --- Sub-Components (Moved outside for better performance) ---
 
@@ -200,8 +203,9 @@ const Dashboard = () => {
       case "profile": return <Profile />;
       case "create-post": return <CreatePost />;
       case "my-posts": return <MyPosts />;
-      case "messages": return <PlaceholderView title="Messages" />;
-      case "nearby": return <PlaceholderView title="Nearby Services" />;
+      case "messages": return <Messages />;
+      case "settings": return <Settings />;
+      case "nearby": return <Nearby setActiveTab={setActiveTab} />;
       default: return <Overview user={user} />;
     }
   };

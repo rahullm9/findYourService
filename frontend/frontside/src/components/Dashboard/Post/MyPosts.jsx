@@ -189,7 +189,7 @@ const MyPosts = () => {
                 <div className="mt-auto space-y-3">
                   <div className="flex items-center justify-between text-xs font-bold">
                     <span className="flex items-center gap-1.5 text-slate-400">
-                      <MapPin size={14} className="text-slate-300" /> {post.location}
+                      <MapPin size={14} className="text-slate-300" /> {post.location?.address || "Location not set"}
                     </span>
                     <span className="flex items-center gap-1 text-slate-800 bg-slate-50 px-2 py-1 rounded-lg">
                       <DollarSign size={14} className="text-emerald-500" /> {post.price > 0 ? post.price : "Flexible"}
