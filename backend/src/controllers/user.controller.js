@@ -84,6 +84,7 @@ export const getMe = async (req, res) => {
       location: user.location,
       availability: user.availability,
       phoneVerified: user.phoneVerified,
+      settings: user.settings,
     });
   } else {
     res.status(404).json({ message: "User not found" });
@@ -103,11 +104,12 @@ export const updateUserProfile = async (req, res) => {
       user.password = req.body.password;
     }
     user.skills = req.body.skills || user.skills;
-    user.bio = req.body.bio || user.bio;
+    user.bio = req.body.bio !== undefined ? req.body.bio : user.bio;
     user.pricing = req.body.pricing !== undefined ? req.body.pricing : user.pricing;
     user.profilePhoto = req.body.profilePhoto || user.profilePhoto;
     user.location = req.body.location || user.location;
     user.availability = req.body.availability || user.availability;
+    user.settings = req.body.settings || user.settings;
 
     const updatedUser = await user.save();
 
@@ -122,9 +124,27 @@ export const updateUserProfile = async (req, res) => {
       location: updatedUser.location,
       availability: updatedUser.availability,
       phoneVerified: updatedUser.phoneVerified,
+      settings: updatedUser.settings,
       token: generateToken(updatedUser._id),
     });
   } else {
     res.status(404).json({ message: "User not found" });
+  }
+};
+
+// @desc    Delete user account
+// @route   DELETE /api/auth/me
+// @access  Private
+export const deleteUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+       return res.status(404).json({ message: "User not found" });
+    }
+    
+    await User.deleteOne({ _id: req.user._id });
+    res.json({ message: "User account deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

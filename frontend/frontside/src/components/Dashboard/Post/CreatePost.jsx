@@ -60,19 +60,57 @@ const CreatePost = () => {
     setSuccess("");
     setError("");
 
+    // Get coordinates (Browser API or Profile fallback)
+    const getCoordinates = () => {
+      return new Promise((resolve) => {
+        if ("geolocation" in navigator) {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => resolve([pos.coords.longitude, pos.coords.latitude]),
+            () => {
+              // Fallback to profile coordinates if browser blocked
+              if (userInfo.location?.lng && userInfo.location?.lat) {
+                resolve([userInfo.location.lng, userInfo.location.lat]);
+              } else {
+                resolve(null);
+              }
+            },
+            { timeout: 5000 }
+          );
+        } else {
+          resolve(userInfo.location?.lng ? [userInfo.location.lng, userInfo.location.lat] : null);
+        }
+      });
+    };
+
     try {
+      const coords = await getCoordinates();
+      
+      if (!coords) {
+        setError("Location access required. Please enable location or update your profile.");
+        setLoading(false);
+        return;
+      }
+
+      const postPayload = {
+        ...formData,
+        location: {
+          coordinates: coords,
+          address: formData.location, // The text input value
+        },
+      };
+
       const response = await fetch("http://localhost:5000/api/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userInfo.token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(postPayload),
       });
 
       const data = await response.json();
       if (response.ok) {
-        setSuccess("Post created successfully! Check 'My Posts' to view it.");
+        setSuccess("Post created successfully! It's now visible to users nearby.");
         setFormData({ title: "", category: "", description: "", location: "", price: "", urgency: "Low", type: "Requesting" });
       } else {
         setError(data.message);

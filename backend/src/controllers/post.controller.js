@@ -7,12 +7,17 @@ export const createPost = async (req, res) => {
   const { title, category, description, location, price, urgency, type } = req.body;
 
   try {
+    // location should be { coordinates: [lng, lat], address: "string" }
     const post = await Post.create({
       user: req.user._id,
       title,
       category,
       description,
-      location,
+      location: {
+        type: "Point",
+        coordinates: location.coordinates,
+        address: location.address,
+      },
       price: price || 0,
       urgency: urgency || "Low",
       type: type || "Requesting",
@@ -25,6 +30,54 @@ export const createPost = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Get nearby posts
+// @route   GET /api/posts/nearby
+// @access  Public
+export const getNearbyPosts = async (req, res) => {
+  const { lat, lng, distance = 10, category, type, minPrice, maxPrice } = req.query;
+
+  try {
+    const query = { status: "Active" };
+
+    if (category) query.category = category;
+    if (type) query.type = type;
+    if (minPrice || maxPrice) {
+      query.price = {};
+      if (minPrice) query.price.$gte = Number(minPrice);
+      if (maxPrice) query.price.$lte = Number(maxPrice);
+    }
+
+    // Safety check for coordinates
+    const latitude = parseFloat(lat);
+    const longitude = parseFloat(lng);
+
+    if (isNaN(latitude) || isNaN(longitude)) {
+      return res.status(400).json({ message: "Invalid coordinates provided. Please enable location." });
+    }
+
+    // Geospatial search: distance in meters
+    const radiusInMeters = Number(distance) * 1000;
+
+    const posts = await Post.find({
+      ...query,
+      "location.coordinates": {
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [longitude, latitude],
+          },
+          $maxDistance: radiusInMeters,
+        },
+      },
+    }).populate("user", "name profilePhoto bio");
+
+    res.json(posts);
+  } catch (error) {
+    console.error("DEBUG [Nearby Error]:", error);
+    res.status(500).json({ message: "Neighborhood search failed. Ensure database location indices are built." });
   }
 };
 
@@ -84,20 +137,28 @@ export const deletePost = async (req, res) => {
 export const getMyPosts = async (req, res) => {
   try {
     const posts = await Post.find({ user: req.user._id }).sort({ createdAt: -1 });
+    // Defensive check: filter for posts that might have corrupted location data
     res.json(posts);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// @desc    Get all active posts (Nearby/Community feed)
+// @desc    Get all active posts (Nearby/Community feed fallback)
 // @route   GET /api/posts
 // @access  Public
 export const getAllPosts = async (req, res) => {
-    try {
-      const posts = await Post.find({ status: "Active" }).populate("user", "name email").sort({ createdAt: -1 });
-      res.json(posts);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
+  try {
+    // Only return active posts that have valid location data
+    const posts = await Post.find({ 
+      status: "Active",
+      "location.type": "Point" 
+    })
+    .populate("user", "name email profilePhoto")
+    .sort({ createdAt: -1 });
+    
+    res.json(posts);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
