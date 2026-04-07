@@ -22,8 +22,8 @@ app.use("/api/messages", messageRoutes);
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "frontend", "dist")));
 
-// Wildcard route to serve the frontend for any other request
-app.get("*", (req, res) => {
+// Wildcard route to serve the frontend for any other request (using regex for Express 5)
+app.get(/^(?!\/api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
 });
 
