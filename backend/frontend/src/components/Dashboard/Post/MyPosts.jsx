@@ -28,7 +28,7 @@ const MyPosts = () => {
   const fetchPosts = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:5000/api/posts/my-posts", {
+      const response = await fetch("${window.location.origin}/api/posts/my-posts", {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
         },
@@ -54,7 +54,7 @@ const MyPosts = () => {
     if (!window.confirm("Are you sure you want to delete this post?")) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/posts/${id}`, {
+      const response = await fetch(`${window.location.origin}/api/posts/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
@@ -73,7 +73,7 @@ const MyPosts = () => {
   const handleToggleStatus = async (post) => {
     const newStatus = post.status === "Active" ? "Completed" : "Active";
     try {
-      const response = await fetch(`http://localhost:5000/api/posts/${post._id}`, {
+      const response = await fetch(`${window.location.origin}/api/posts/${post._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -93,7 +93,7 @@ const MyPosts = () => {
     e.preventDefault();
     setIsUpdating(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/posts/${editingPost._id}`, {
+      const response = await fetch(`${window.location.origin}/api/posts/${editingPost._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

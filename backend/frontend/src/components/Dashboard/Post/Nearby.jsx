@@ -70,7 +70,7 @@ const Nearby = ({ setActiveTab }) => {
         maxPrice: customFilters.maxPrice || priceRange.max,
       });
 
-      const response = await fetch(`http://localhost:5000/api/posts/nearby?${params}`);
+      const response = await fetch(`${window.location.origin}/api/posts/nearby?${params}`);
       const data = await response.json();
       if (response.ok) {
         setPosts(data);
@@ -100,7 +100,7 @@ const Nearby = ({ setActiveTab }) => {
 
   const handleStartChat = async (post) => {
     try {
-      const response = await fetch("http://localhost:5000/api/messages/start", {
+      const response = await fetch("${window.location.origin}/api/messages/start", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

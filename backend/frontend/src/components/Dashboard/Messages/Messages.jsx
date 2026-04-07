@@ -16,7 +16,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import io from "socket.io-client";
 
-const socket = io("http://localhost:5000");
+const socket = io("${window.location.origin}");
 
 const Messages = () => {
   const [conversations, setConversations] = useState([]);
@@ -66,7 +66,7 @@ const Messages = () => {
 
   const fetchConversations = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/messages/conversations", {
+      const response = await fetch("${window.location.origin}/api/messages/conversations", {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
       const data = await response.json();
@@ -83,7 +83,7 @@ const Messages = () => {
   const fetchMessages = async (conversationId) => {
     setChatLoading(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/messages/${conversationId}`, {
+      const response = await fetch(`${window.location.origin}/api/messages/${conversationId}`, {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
       const data = await response.json();
@@ -103,7 +103,7 @@ const Messages = () => {
     if (!newMessage.trim()) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/messages/${selectedConversation._id}`, {
+      const response = await fetch(`${window.location.origin}/api/messages/${selectedConversation._id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -123,7 +123,7 @@ const Messages = () => {
 
   const toggleResolved = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/messages/conversations/${selectedConversation._id}/resolve`, {
+      const response = await fetch(`${window.location.origin}/api/messages/conversations/${selectedConversation._id}/resolve`, {
         method: "PUT",
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
