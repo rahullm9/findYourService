@@ -39,7 +39,7 @@ const Profile = () => {
 
   const fetchProfile = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/me", {
+      const response = await fetch("${window.location.origin}/api/auth/me", {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
         },
@@ -64,7 +64,7 @@ const Profile = () => {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/profile", {
+      const response = await fetch("${window.location.origin}/api/auth/profile", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

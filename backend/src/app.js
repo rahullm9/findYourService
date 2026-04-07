@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import path from "path";
 
 const app = express();
 
@@ -16,6 +17,15 @@ import messageRoutes from "./routes/message.routes.js";
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/messages", messageRoutes);
+
+// Serve Frontend Static Files
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "frontend", "dist")));
+
+// Wildcard route to serve the frontend for any other request (using regex for Express 5)
+app.get(/^(?!\/api).*/, (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+});
 
 // Health check
 app.get("/api/health", (_req, res) => {
