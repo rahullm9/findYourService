@@ -28,7 +28,7 @@ const MyPosts = () => {
   const fetchPosts = async () => {
     try {
       setLoading(true);
-      const response = await fetch("${window.location.origin}/api/posts/my-posts", {
+      const response = await fetch(`${window.location.origin}/api/posts/my-posts`, {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
         },
