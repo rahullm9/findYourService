@@ -12,14 +12,14 @@ import {
 } from "lucide-react";
 import io from "socket.io-client";
 
-const socket = io("${window.location.origin}");
+const socket = io(`${window.location.origin}`);
 
 const Sidebar = ({ activeTab, setActiveTab, handleLogout, user, isOpen, setIsOpen }) => {
   const [unreadCount, setUnreadCount] = useState(0);
 
   const fetchUnreadCount = async () => {
     try {
-      const response = await fetch("${window.location.origin}/api/messages/unread-count", {
+      const response = await fetch(`${window.location.origin}/api/messages/unread-count`, {
         headers: { Authorization: `Bearer ${user?.token}` },
       });
       const data = await response.json();

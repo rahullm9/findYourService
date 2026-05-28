@@ -16,7 +16,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import io from "socket.io-client";
 
-const socket = io("${window.location.origin}");
+const socket = io(`${window.location.origin}`);
 
 const Messages = () => {
   const [conversations, setConversations] = useState([]);
@@ -66,7 +66,7 @@ const Messages = () => {
 
   const fetchConversations = async () => {
     try {
-      const response = await fetch("${window.location.origin}/api/messages/conversations", {
+      const response = await fetch(`${window.location.origin}/api/messages/conversations`, {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
       const data = await response.json();

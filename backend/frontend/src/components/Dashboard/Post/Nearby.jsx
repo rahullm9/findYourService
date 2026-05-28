@@ -100,7 +100,7 @@ const Nearby = ({ setActiveTab }) => {
 
   const handleStartChat = async (post) => {
     try {
-      const response = await fetch("${window.location.origin}/api/messages/start", {
+      const response = await fetch(`${window.location.origin}/api/messages/start`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

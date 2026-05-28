@@ -35,7 +35,7 @@ const Settings = () => {
     setSuccessMsg("");
     setErrorMsg("");
     try {
-      const response = await fetch("${window.location.origin}/api/auth/profile", {
+      const response = await fetch(`${window.location.origin}/api/auth/profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -72,7 +72,7 @@ const Settings = () => {
   const handleDeleteAccount = async () => {
     setLoading(true);
     try {
-      const response = await fetch("${window.location.origin}/api/auth/me", {
+      const response = await fetch(`${window.location.origin}/api/auth/me`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
