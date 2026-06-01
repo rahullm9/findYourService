@@ -16,7 +16,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import io from "socket.io-client";
 
-const socket = io(`${window.location.origin}`);
+const socket = io(window.location.origin);
 
 const Messages = () => {
   const [conversations, setConversations] = useState([]);
