@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import io from "socket.io-client";
 
-const socket = io(`${window.location.origin}`);
+const socket = io(window.location.origin);
 
 const Sidebar = ({ activeTab, setActiveTab, handleLogout, user, isOpen, setIsOpen }) => {
   const [unreadCount, setUnreadCount] = useState(0);
