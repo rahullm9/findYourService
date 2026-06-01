@@ -1,129 +1,182 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Shield, ChevronRight } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
-  // Handle scroll effect for glassmorphism
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (location.pathname === "/" && location.hash === "#services") {
+      const timer = setTimeout(() => {
+        const element = document.getElementById("services");
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [location]);
+
+  const handleServicesClick = (e) => {
+    if (location.pathname === "/") {
+      e.preventDefault();
+      document.getElementById("services")?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   const navLinks = [
     { name: "Home", path: "/" },
-    { name: "Services", path: "/services" },
-    { name: "Contact", path: "/contactus" },
+    { name: "Services", path: "/#services" },
+    { name: "About", path: "/about" },
   ];
 
-  const toggleMenu = () => setIsOpen(!isOpen);
+  const isActive = (link) => {
+    if (link.name === "Home") {
+      return location.pathname === "/" && location.hash !== "#services";
+    }
+    if (link.name === "Services") {
+      return location.pathname === "/" && location.hash === "#services";
+    }
+    return location.pathname === link.path;
+  };
+
+
+  const navStyle = {
+    position: "fixed", top: 0, left: 0, right: 0, zIndex: 50,
+    background: "white",
+    borderBottom: "1px solid #f0f0f0",
+    boxShadow: scrolled ? "0 1px 6px rgba(0,0,0,0.06)" : "none",
+    transition: "box-shadow 0.2s",
+  };
+
+  const innerStyle = {
+    maxWidth: "1100px", margin: "0 auto", padding: "0 24px",
+    height: "64px", display: "flex", alignItems: "center", justifyContent: "space-between",
+  };
+
+  const logoBoxStyle = {
+    width: "36px", height: "36px", borderRadius: "8px",
+    background: "linear-gradient(135deg, #e85d04, #f48c06)",
+    display: "flex", alignItems: "center", justifyContent: "center",
+    color: "white", fontWeight: 900, fontSize: "11px", letterSpacing: "0.03em",
+    flexShrink: 0,
+  };
 
   return (
-    <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled 
-          ? "bg-white/80 backdrop-blur-lg shadow-lg py-3" 
-          : "bg-transparent py-5"
-      }`}
-    >
-      <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
-        
+    <header style={navStyle}>
+      <div style={innerStyle}>
+
         {/* Logo */}
-        <Link to="/" className="flex items-center space-x-2 group">
-          <div className="w-10 h-10 bg-blue-700 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:rotate-12 transition-transform duration-300">
-            <Shield size={24} />
-          </div>
-          <span className="text-2xl font-black text-blue-900 tracking-tight">
-            FYS<span className="text-blue-600">.</span>
+        <Link to="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }}>
+          <div style={logoBoxStyle}>FYS</div>
+          <span style={{ fontWeight: 700, color: "#111827", fontSize: "17px", letterSpacing: "-0.02em" }}>
+            FindYourService
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
-          <ul className="flex space-x-8">
-            {navLinks.map((link) => (
-              <li key={link.name}>
-                <Link
-                  to={link.path}
-                  className={`relative text-lg font-semibold transition-colors duration-200 ${
-                    location.pathname === link.path 
-                      ? "text-blue-700" 
-                      : "text-gray-600 hover:text-blue-600"
-                  }`}
-                >
-                  {link.name}
-                  {location.pathname === link.path && (
-                    <motion.div
-                      layoutId="nav-underline"
-                      className="absolute -bottom-1 left-0 w-full h-0.5 bg-blue-600 rounded-full"
-                    />
-                  )}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          
-          <Link to="/signin">
-            <button className="bg-blue-700 text-white font-bold py-2.5 px-6 rounded-xl shadow-md hover:bg-blue-800 hover:shadow-lg transition-all active:scale-95">
-              Sign In
-            </button>
-          </Link>
+        {/* Desktop Nav Links */}
+        <nav style={{ display: "flex", alignItems: "center", gap: "32px" }} className="hidden md:flex">
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              to={link.path}
+              onClick={(e) => {
+                if (link.name === "Services") {
+                  handleServicesClick(e);
+                }
+              }}
+              style={{
+                textDecoration: "none",
+                fontSize: "14px",
+                fontWeight: isActive(link) ? 600 : 500,
+                color: isActive(link) ? "#111827" : "#6b7280",
+                transition: "color 0.15s",
+              }}
+              onMouseOver={e => { e.currentTarget.style.color = "#111827"; }}
+              onMouseOut={e => { if (!isActive(link)) e.currentTarget.style.color = "#6b7280"; }}
+            >
+              {link.name}
+            </Link>
+          ))}
         </nav>
 
-        {/* Mobile Menu Toggle */}
-        <button 
-          className="md:hidden p-2 text-blue-900 focus:outline-none" 
-          onClick={toggleMenu}
+        {/* CTA Buttons */}
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }} className="hidden md:flex">
+          <Link to="/signin" style={{ textDecoration: "none", fontSize: "14px", fontWeight: 500, color: "#6b7280" }}>
+            Sign in
+          </Link>
+          <Link to="/contactus">
+            <button
+              style={{
+                background: "#e85d04", color: "white", border: "none",
+                padding: "10px 20px", borderRadius: "8px",
+                fontSize: "14px", fontWeight: 600, cursor: "pointer",
+                transition: "opacity 0.15s",
+              }}
+              onMouseOver={e => { e.currentTarget.style.opacity = "0.88"; }}
+              onMouseOut={e => { e.currentTarget.style.opacity = "1"; }}
+            >
+              Contact us
+            </button>
+          </Link>
+        </div>
+
+        {/* Mobile toggle */}
+        <button
+          className="md:hidden"
+          onClick={() => setIsOpen(!isOpen)}
+          style={{ background: "none", border: "none", cursor: "pointer", color: "#374151", padding: "6px" }}
         >
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
+          {isOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
-      {/* Mobile Navigation Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white/95 backdrop-blur-xl border-b border-gray-100 overflow-hidden shadow-2xl"
-          >
-            <div className="px-6 py-8 space-y-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.path}
-                  onClick={() => setIsOpen(false)}
-                  className={`flex items-center justify-between p-4 rounded-2xl text-lg font-bold transition-all ${
-                    location.pathname === link.path 
-                      ? "bg-blue-50 text-blue-700" 
-                      : "text-gray-700 hover:bg-gray-50"
-                  }`}
-                >
-                  <span>{link.name}</span>
-                  <ChevronRight size={20} className={location.pathname === link.path ? "opacity-100" : "opacity-0"} />
-                </Link>
-              ))}
-              <Link
-                to="/signin"
-                onClick={() => setIsOpen(false)}
-                className="block w-full"
-              >
-                <button className="w-full bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg mt-4">
-                  Sign In
-                </button>
-              </Link>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div style={{ background: "white", borderTop: "1px solid #f0f0f0", padding: "12px 24px 20px", boxShadow: "0 8px 24px rgba(0,0,0,0.08)" }}>
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              to={link.path}
+              onClick={(e) => {
+                setIsOpen(false);
+                if (link.name === "Services") {
+                  handleServicesClick(e);
+                }
+              }}
+              style={{
+                display: "block", padding: "12px 16px", borderRadius: "8px",
+                textDecoration: "none", fontSize: "14px", fontWeight: 500,
+                color: isActive(link) ? "#e85d04" : "#374151",
+                background: isActive(link) ? "#fff7ed" : "transparent",
+                marginBottom: "4px",
+              }}
+            >
+              {link.name}
+            </Link>
+          ))}
+          <Link to="/contactus" onClick={() => setIsOpen(false)}>
+            <button
+              style={{
+                width: "100%", marginTop: "12px", background: "#e85d04",
+                color: "white", border: "none", padding: "13px", borderRadius: "8px",
+                fontSize: "14px", fontWeight: 600, cursor: "pointer",
+              }}
+            >
+              Contact us
+            </button>
+          </Link>
+        </div>
+      )}
     </header>
   );
 };

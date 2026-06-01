@@ -1,157 +1,125 @@
-import React from 'react';
+import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Search, MapPin, Star, ShieldCheck, Users } from "lucide-react";
-import heroIllustration from "../../assets/hero_illu.png";
+import { ArrowRight } from "lucide-react";
+import workersHero from "../../assets/service_workers_hero.png";
 
 const Heropage = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.5, ease: "easeOut" },
-    },
-  };
+  const fadeUp = (delay = 0) => ({
+    hidden: { opacity: 0, y: 24 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut", delay } },
+  });
 
   return (
-    <section className="relative overflow-hidden bg-white py-12 lg:py-20">
-      {/* Background Decorative Elements */}
-      <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-50 rounded-full blur-3xl opacity-50" />
-      <div className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 w-80 h-80 bg-purple-50 rounded-full blur-3xl opacity-50" />
+    <section className="bg-white pt-16 overflow-hidden">
+      {/* -- Headline Block -- */}
+      <div className="max-w-5xl mx-auto px-6 pt-16 pb-10 text-center">
 
-      <div className="container mx-auto px-6 md:px-12 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <motion.p
+          variants={fadeUp(0)}
+          initial="hidden"
+          animate="visible"
+          style={{ color: "#e85d04", fontSize: "12px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "16px" }}
+        >
+          Connecting Communities
+        </motion.p>
 
-          {/* Left Column: Content */}
-          <motion.div
-            variants={containerVariants}
+        <motion.h1
+          variants={fadeUp(0.1)}
+          initial="hidden"
+          animate="visible"
+          style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", fontWeight: 800, color: "#111827", lineHeight: 1.15, marginBottom: "20px" }}
+        >
+          {"We're making a difference"}
+          <br />
+          {"to people's lives"}
+        </motion.h1>
+
+        <motion.p
+          variants={fadeUp(0.2)}
+          initial="hidden"
+          animate="visible"
+          style={{ color: "#6b7280", fontSize: "1rem", maxWidth: "440px", margin: "0 auto 32px", lineHeight: 1.7 }}
+        >
+          Creating a way to connect people ready to work, with people who need work done
+        </motion.p>
+
+        <motion.div variants={fadeUp(0.3)} initial="hidden" animate="visible">
+          <Link to="/contactus">
+            <button
+              style={{
+                display: "inline-flex", alignItems: "center", gap: "8px",
+                padding: "12px 28px", borderRadius: "8px", border: "1.5px solid #d1d5db",
+                background: "white", color: "#374151", fontSize: "14px", fontWeight: 600,
+                cursor: "pointer", transition: "all 0.15s",
+              }}
+              onMouseOver={e => e.currentTarget.style.background = "#f9fafb"}
+              onMouseOut={e => e.currentTarget.style.background = "white"}
+            >
+              Contact us <ArrowRight size={15} />
+            </button>
+          </Link>
+        </motion.div>
+
+        {/* Dots indicator */}
+        <div style={{ display: "flex", justifyContent: "center", gap: "6px", marginTop: "28px" }}>
+          {Array.from({ length: 10 }).map((_, i) => (
+            <div key={i} style={{
+              height: "8px", borderRadius: "99px",
+              width: i === 0 ? "22px" : "8px",
+              background: i === 0 ? "#e85d04" : "#e5e7eb",
+              transition: "all 0.2s",
+            }} />
+          ))}
+        </div>
+      </div>
+
+      {/* -- Hero Image -- */}
+      <motion.div
+        initial={{ opacity: 0, y: 36 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: "easeOut", delay: 0.35 }}
+        style={{ maxWidth: "900px", margin: "0 auto", padding: "0 24px" }}
+      >
+        <div style={{ borderRadius: "20px", overflow: "hidden", background: "#f3f4f6", position: "relative" }}>
+          <img
+            src={workersHero}
+            alt="Service professionals"
+            style={{ width: "100%", display: "block", maxHeight: "480px", objectFit: "cover", objectPosition: "center top" }}
+          />
+          <div style={{
+            position: "absolute", bottom: 0, left: 0, right: 0, height: "80px",
+            background: "linear-gradient(to top, white, transparent)",
+          }} />
+        </div>
+      </motion.div>
+
+      {/* -- Mission Section -- */}
+      <div style={{ background: "white", padding: "72px 24px" }}>
+        <div style={{ maxWidth: "960px", margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: "64px", alignItems: "start" }}>
+          <motion.h2
+            variants={fadeUp(0)}
             initial="hidden"
-            animate="visible"
-            className="text-left"
+            whileInView="visible"
+            viewport={{ once: true }}
+            style={{ fontSize: "2.25rem", fontWeight: 800, color: "#111827", lineHeight: 1.2 }}
           >
-            <motion.div variants={itemVariants} className="inline-flex items-center space-x-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full mb-6 font-medium text-sm">
-              <ShieldCheck size={16} />
-              <span>Trusted by 5000+ Professionals</span>
-            </motion.div>
-
-            <motion.h1
-              variants={itemVariants}
-              className="text-4xl md:text-6xl font-extrabold text-blue-900 leading-tight mb-6"
-            >
-              Find the Perfect <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Professional</span> for Every Task
-            </motion.h1>
-
-            <motion.p
-              variants={itemVariants}
-              className="text-lg md:text-xl text-gray-600 mb-8 max-w-xl"
-            >
-              Whether you need an expert plumber, a dedicated tutor, or a creative designer, Connect with verified experts in your neighborhood.
-            </motion.p>
-
-            {/* Modern Search Bar */}
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-col md:flex-row items-center bg-white p-2 rounded-2xl shadow-xl border border-gray-100 mb-8 max-w-2xl"
-            >
-              <div className="flex items-center flex-1 px-4 py-3 border-b md:border-b-0 md:border-r border-gray-100">
-                <Search className="text-gray-400 mr-3" size={20} />
-                <input
-                  type="text"
-                  placeholder="What service do you need?"
-                  className="w-full focus:outline-none text-gray-700 font-medium"
-                />
-              </div>
-              <div className="flex items-center flex-1 px-4 py-3">
-                <MapPin className="text-gray-400 mr-3" size={20} />
-                <input
-                  type="text"
-                  placeholder="Your Location"
-                  className="w-full focus:outline-none text-gray-700 font-medium"
-                />
-              </div>
-              <Link to="/services" className="w-full md:w-auto">
-                <button className="w-full md:w-auto bg-blue-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg transition-all hover:bg-blue-800 active:scale-95">
-                  Search
-                </button>
-              </Link>
-            </motion.div>
-
-            {/* Quick Stats/Trust Indicators */}
-            <motion.div variants={itemVariants} className="flex flex-wrap gap-6 text-sm text-gray-500 font-medium">
-              <div className="flex items-center space-x-2">
-                <Star className="text-yellow-400 fill-yellow-400" size={18} />
-                <span>4.9/5 Average Rating</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Users className="text-blue-500" size={18} />
-                <span>20k+ Successful Projects</span>
-              </div>
-            </motion.div>
-          </motion.div>
-
-          {/* Right Column: Illustration */}
+            Our mission
+          </motion.h2>
           <motion.div
-            initial={{ opacity: 0, scale: 0.8, x: 20 }}
-            animate={{ opacity: 1, scale: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="hidden lg:block relative"
+            variants={fadeUp(0.1)}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            style={{ color: "#6b7280", fontSize: "1rem", lineHeight: 1.8 }}
           >
-            <div className="relative z-10">
-              <img
-                src={heroIllustration}
-                alt="Service Marketplace"
-                className="w-full h-auto drop-shadow-2xl rounded-3xl"
-              />
-            </div>
-            {/* Soft decorative circles behind illustration */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-gradient-to-tr from-blue-100/40 to-purple-100/40 rounded-full blur-2xl -z-10 animate-pulse" />
-
-            {/* Floating Glassmorphism Cards */}
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-6 -left-6 bg-white/80 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-white/50"
-            >
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600">
-                  <ShieldCheck size={24} />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500">Verified Pro</p>
-                  <p className="text-sm font-bold text-gray-800">John D. Plumber</p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              className="absolute -bottom-6 -right-6 bg-white/80 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-white/50"
-            >
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600">
-                  <Star size={24} />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500">5 Star Rating</p>
-                  <p className="text-sm font-bold text-gray-800">Top Rated Expert</p>
-                </div>
-              </div>
-            </motion.div>
+            <p style={{ marginBottom: "16px" }}>
+              At FindYourService, we&apos;re forging connections between skilled professionals and people who need them. We believe every task deserves an expert — from plumbing and carpentry to tutoring and design.
+            </p>
+            <p>
+              We are a team of passionate individuals working to build a community where finding trustworthy help is as easy as a single search, with the shared goal of making quality service accessible to everyone.
+            </p>
           </motion.div>
-
         </div>
       </div>
     </section>
@@ -159,4 +127,3 @@ const Heropage = () => {
 };
 
 export default Heropage;
-
